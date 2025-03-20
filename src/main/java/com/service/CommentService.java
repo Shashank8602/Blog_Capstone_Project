@@ -50,14 +50,42 @@ public class CommentService {
 		Blog blog = blogRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Blog not found with ID: " + id));
 		List<Comment> commentForBlog = commentRepository.findByBlogId(blog.getId());
-		
-		if(commentForBlog.isEmpty()) {
-			throw new NoCommentExistException("No comment(s) exists for blog with ID: "+id);
+
+		if (commentForBlog.isEmpty()) {
+			throw new NoCommentExistException("No comment(s) exists for blog with ID: " + id);
 		}
-		
+
 		List<CommentDTO> commentDtoForBlog = commentForBlog.stream().map(this::getDto).collect(Collectors.toList());
 
 		return commentDtoForBlog;
+	}
+
+	// GET SPECIFIC COMMENT BY ID FOR BLOG WITH ID
+	public CommentDTO getCommentByIdForBlogById(Long commentId, Long blogId) {
+		blogRepository.findById(blogId)
+				.orElseThrow(() -> new ResourceNotFoundException("Blog not found with ID: " + blogId));
+
+		List<Comment> comments = commentRepository.findByBlogId(blogId);
+
+		Comment foundComment = comments.stream().filter(c -> c.getId().equals(commentId)).findFirst()
+				.orElseThrow(() -> new ResourceNotFoundException("Comment not found with ID: " + commentId));
+
+		return getDto(foundComment);
+	}
+
+	// DELETE COMMENT BY ITS ID
+	public Boolean deleteCommentByIdForBlogById(Long commentId, Long blogId) {
+		blogRepository.findById(blogId)
+				.orElseThrow(() -> new ResourceNotFoundException("Blog not found with ID: " + blogId));
+
+		List<Comment> comments = commentRepository.findByBlogId(blogId);
+
+		Comment foundComment = comments.stream().filter(c -> c.getId().equals(commentId)).findFirst()
+				.orElseThrow(() -> new ResourceNotFoundException("Comment not found with ID: " + commentId));
+
+		commentRepository.delete(foundComment);
+		return true;
+
 	}
 
 	// CONVERSION METHODS

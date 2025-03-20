@@ -3,7 +3,6 @@ package com.controller;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dto.BlogDTO;
 import com.dto.CommentDTO;
-import com.entity.Comment;
 import com.service.BlogService;
 import com.service.CommentService;
 
@@ -42,6 +40,7 @@ public class BlogController {
 
 	//CREATE BLOG
 	@PostMapping
+	@Tag(name = "Create New Blog")
 	@Operation(summary = "Create New Blog", description = "Create a new blog")
 	public ResponseEntity<BlogDTO> createNewBlog(@Valid @RequestBody BlogDTO blogDto) {
 		BlogDTO blog = blogService.addBlog(blogDto);
@@ -50,6 +49,7 @@ public class BlogController {
 
 	//GET BLOG BY ID
 	@GetMapping("/{id}")
+	@Tag(name = "Get Blog by ID")
 	@Operation(summary = "Get Blog by ID", description = "Fetch a specific blog using its ID")
 	public ResponseEntity<BlogDTO> getBlogById(@PathVariable Long id) {
 		BlogDTO blog = blogService.getBlogById(id);
@@ -58,6 +58,7 @@ public class BlogController {
 
 	//GET ALL BLOGS
 	@GetMapping
+	@Tag(name = "Get All Blogs")
 	@Operation(summary = "Get All Blogs", description = "Fetch all blogs")
 	public ResponseEntity<List<BlogDTO>> getAllBlogs() {
 		List<BlogDTO> allBlogs = blogService.getAllBlogs();
@@ -67,6 +68,7 @@ public class BlogController {
 	
 	//UPDATE BLOG
 	@PutMapping("/{id}")
+	@Tag(name = "Update Blog")
 	@Operation(summary = "Update Blog", description = "Update an existing blog by its ID")
 	public ResponseEntity<BlogDTO> updateBlog(@PathVariable Long id, @Valid @RequestBody BlogDTO blogDto) {
 		BlogDTO blog = blogService.modifyBlog(id, blogDto);
@@ -75,6 +77,7 @@ public class BlogController {
 
 	//DELETE BLOG
 	@DeleteMapping("/{id}")
+	@Tag(name = "Delete Blog")
 	@Operation(summary = "Delete Blog", description = "Delete a blog using its ID")
 	public ResponseEntity<Boolean> deleteBlog(@PathVariable Long id) {
 		boolean deleteStatus = blogService.deleteBlog(id);
@@ -85,6 +88,7 @@ public class BlogController {
 
 	//CREATE A COMMENT
 	@PostMapping("/comment")
+	@Tag(name = "Add Comment to Blog")
 	@Operation(summary = "Add Comment to Blog", description = "Add a comment to a blog using blog's ID")
 	public ResponseEntity<CommentDTO> createNewComment(@Valid @RequestBody CommentDTO commentDto) {
 		CommentDTO comment = commentService.addComment(commentDto);
@@ -93,6 +97,7 @@ public class BlogController {
 	
 	//GET ALL COMMENTS FOR BLOG
 	@GetMapping("/{id}/comment")
+	@Tag(name = "Get All Comments of a Blog")
 	@Operation(summary = "Get Comments of a Blog", description = "Get comments of a blog using blog's ID")
 	public ResponseEntity<List<CommentDTO>> getCommentsForBlogId(@PathVariable Long id) {
 		List<CommentDTO> commentsByBlogId = commentService.getCommentByBlogId(id);
@@ -101,6 +106,7 @@ public class BlogController {
 
 	//GET A COMMENT FOR A BLOG
 	@GetMapping("/{blogId}/comment/{commentId}")
+	@Tag(name = "Get Comment of a Blog")
 	@Operation(summary = "Get Comment of a Blog", description = "Get a comment of a blog using comment's ID")
 	public ResponseEntity<CommentDTO> getComment(@PathVariable Long commentId, @PathVariable Long blogId) {
 		CommentDTO comment = commentService.getCommentByIdForBlogById(commentId, blogId);
@@ -109,6 +115,7 @@ public class BlogController {
 
 	//DELETE A COMMENT FOR A BLOG
 	@DeleteMapping("/{blogId}/comment/{commentId}")
+	@Tag(name = "Delete Comment of a Blog")
 	@Operation(summary = "Delete Comment of a Blog", description = "Delete a comment of a blog using comment's ID")
 	public ResponseEntity<String> deleteCommentOfBlog(@PathVariable Long commentId, @PathVariable Long blogId) {
 		Boolean deleteValue = commentService.deleteCommentByIdForBlogById(commentId, blogId);

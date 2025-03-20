@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,9 +22,12 @@ import com.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
 
 @RestController
 @RequestMapping("/api/blogs")
+@Validated
 @Tag(name = "Blog Controller", description = "APIs for managing blogs and comments")
 public class BlogController {
 
@@ -51,8 +55,8 @@ public class BlogController {
 	@GetMapping("/{id}")
 	@Tag(name = "Get Blog by ID")
 	@Operation(summary = "Get Blog by ID", description = "Fetch a specific blog using its ID")
-	public ResponseEntity<BlogDTO> getBlogById(@PathVariable Long id) {
-		BlogDTO blog = blogService.getBlogById(id);
+	public ResponseEntity<BlogDTO> getBlogById(@PathVariable("id") @Positive(message = "Blog ID must be positive") Long blogId) {
+		BlogDTO blog = blogService.getBlogById(blogId);
 		return new ResponseEntity<BlogDTO>(blog, HttpStatus.FOUND);
 	}
 
@@ -70,8 +74,8 @@ public class BlogController {
 	@PutMapping("/{id}")
 	@Tag(name = "Update Blog")
 	@Operation(summary = "Update Blog", description = "Update an existing blog by its ID")
-	public ResponseEntity<BlogDTO> updateBlog(@PathVariable Long id, @Valid @RequestBody BlogDTO blogDto) {
-		BlogDTO blog = blogService.modifyBlog(id, blogDto);
+	public ResponseEntity<BlogDTO> updateBlog(@PathVariable("id") @Positive(message = "Blog ID must be positive") Long blogId, @Valid @RequestBody BlogDTO blogDto) {
+		BlogDTO blog = blogService.modifyBlog(blogId, blogDto);
 		return new ResponseEntity<BlogDTO>(blog, HttpStatus.OK);
 	}
 
@@ -79,9 +83,12 @@ public class BlogController {
 	@DeleteMapping("/{id}")
 	@Tag(name = "Delete Blog")
 	@Operation(summary = "Delete Blog", description = "Delete a blog using its ID")
-	public ResponseEntity<Boolean> deleteBlog(@PathVariable Long id) {
-		boolean deleteStatus = blogService.deleteBlog(id);
-		return new ResponseEntity<Boolean>(deleteStatus, HttpStatus.OK);
+	public ResponseEntity<String> deleteBlog(@PathVariable("id") @Positive(message = "Blog ID must be positive") Long blogId) {
+		boolean deleteStatus = blogService.deleteBlog(blogId);
+		if(deleteStatus) {
+			return new ResponseEntity<String>("Blog deleted with ID: "+blogId, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("Blog not deleted with ID: "+blogId, HttpStatus.OK);
 	}
 
 	// COMMENTS
@@ -99,8 +106,8 @@ public class BlogController {
 	@GetMapping("/{id}/comment")
 	@Tag(name = "Get All Comments of a Blog")
 	@Operation(summary = "Get Comments of a Blog", description = "Get comments of a blog using blog's ID")
-	public ResponseEntity<List<CommentDTO>> getCommentsForBlogId(@PathVariable Long id) {
-		List<CommentDTO> commentsByBlogId = commentService.getCommentByBlogId(id);
+	public ResponseEntity<List<CommentDTO>> getCommentsForBlogId(@PathVariable("id") @Positive(message = "Blog ID must be positive") Long blogId) {
+		List<CommentDTO> commentsByBlogId = commentService.getCommentByBlogId(blogId);
 		return new ResponseEntity<List<CommentDTO>>(commentsByBlogId, HttpStatus.FOUND);
 	}
 
@@ -108,7 +115,7 @@ public class BlogController {
 	@GetMapping("/{blogId}/comment/{commentId}")
 	@Tag(name = "Get Comment of a Blog")
 	@Operation(summary = "Get Comment of a Blog", description = "Get a comment of a blog using comment's ID")
-	public ResponseEntity<CommentDTO> getComment(@PathVariable Long commentId, @PathVariable Long blogId) {
+	public ResponseEntity<CommentDTO> getCommentOfBlog(@PathVariable @Positive(message = "Comment ID must be positive") Long commentId, @PathVariable @Positive(message = "Blog ID must be positive") Long blogId) {
 		CommentDTO comment = commentService.getCommentByIdForBlogById(commentId, blogId);
 		return new ResponseEntity<CommentDTO>(comment, HttpStatus.FOUND);
 	}
@@ -117,7 +124,7 @@ public class BlogController {
 	@DeleteMapping("/{blogId}/comment/{commentId}")
 	@Tag(name = "Delete Comment of a Blog")
 	@Operation(summary = "Delete Comment of a Blog", description = "Delete a comment of a blog using comment's ID")
-	public ResponseEntity<String> deleteCommentOfBlog(@PathVariable Long commentId, @PathVariable Long blogId) {
+	public ResponseEntity<String> deleteCommentOfBlog(@PathVariable @Positive(message = "Comment ID must be positive") Long commentId, @PathVariable @Positive(message = "Blog ID must be positive") Long blogId) {
 		Boolean deleteValue = commentService.deleteCommentByIdForBlogById(commentId, blogId);
 		if (deleteValue) {
 			return new ResponseEntity<String>("Comment deleted with ID: " + commentId + " of blog with ID: " + blogId,

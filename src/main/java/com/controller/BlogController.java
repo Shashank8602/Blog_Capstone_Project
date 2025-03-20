@@ -1,5 +1,7 @@
 package com.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,6 +35,8 @@ public class BlogController {
 		this.blogService = blogService;
 		this.commentService = commentService;
 	}
+	
+	//BLOGS
 
 	@PostMapping
 	@Operation(summary = "Create New Blog", description = "Create a new blog")
@@ -61,12 +65,21 @@ public class BlogController {
 		boolean deleteStatus = blogService.deleteBlog(id);
 		return new ResponseEntity<Boolean>(deleteStatus, HttpStatus.OK);
 	}
+	
+	//COMMENTS
 
 	@PostMapping("/comment")
 	@Operation(summary = "Add Comment to Blog", description = "Add a comment to a blog using blog's ID")
 	public ResponseEntity<CommentDTO> createNewComment(@Valid @RequestBody CommentDTO commentDto) {
 		CommentDTO comment = commentService.addComment(commentDto);
 		return new ResponseEntity<CommentDTO>(comment, HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/{id}/comment")
+	@Operation(summary = "Get Comments of a Blog", description = "Get comments of a blog using blog's ID")
+	public ResponseEntity<List<CommentDTO>> getCommentsForBlogId(@PathVariable Long id){
+		List<CommentDTO> commentsByBlogId = commentService.getCommentByBlogId(id);
+		return new ResponseEntity<List<CommentDTO>>(commentsByBlogId, HttpStatus.FOUND);
 	}
 
 }

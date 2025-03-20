@@ -1,5 +1,8 @@
 package com.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +29,8 @@ public class CommentService {
 	}
 
 	// BUSINESS CODE
+
+	// ADD COMMENT
 	public CommentDTO addComment(CommentDTO commentDto) {
 		Blog blog = blogRepository.findById(commentDto.getBlogId())
 				.orElseThrow(() -> new ResourceNotFoundException("Blog not found with ID: " + commentDto.getBlogId()));
@@ -37,6 +42,16 @@ public class CommentService {
 		savedDto.setBlogId(commentDto.getBlogId());
 
 		return savedDto;
+	}
+
+	// GET COMMENTS FOR BLOG ID
+	public List<CommentDTO> getCommentByBlogId(Long id) {
+		Blog blog = blogRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Blog not found with ID: " + id));
+		List<Comment> commentForBlog = commentRepository.findByBlogId(blog.getId());
+		List<CommentDTO> commentDtoForBlog = commentForBlog.stream().map(this::getDto).collect(Collectors.toList());
+
+		return commentDtoForBlog;
 	}
 
 	// CONVERSION METHODS

@@ -5,7 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import com.entity.Blog;
 
-@Repository
-public interface BlogRepository extends JpaRepository<Blog, Long> {
+@Repository // marks this interface as a Spring Data repository
+public interface BlogRepository extends JpaRepository<Blog, Long> // provides CRUD operations for the Blog entity, with Long as the primary key type
+{
 
 }

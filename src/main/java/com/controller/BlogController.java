@@ -43,6 +43,12 @@ public class BlogController {
 	// BLOGS
 
 	//CREATE BLOG
+	
+	/*
+	Creates a new blog.
+	Takes a BlogDTO as input.
+	Returns the created BlogDTO with HTTP status 201 (Created).
+	*/
 	@PostMapping
 	@Tag(name = "Create New Blog")
 	@Operation(summary = "Create New Blog", description = "Create a new blog")
@@ -52,6 +58,11 @@ public class BlogController {
 	}
 
 	//GET BLOG BY ID
+	/*
+	Retrieves a blog by its ID.
+	Takes a blog ID as input.
+	Returns the corresponding BlogDTO with HTTP status 302 (Found).
+	*/
 	@GetMapping("/{id}")
 	@Tag(name = "Get Blog by ID")
 	@Operation(summary = "Get Blog by ID", description = "Fetch a specific blog using its ID")
@@ -61,6 +72,10 @@ public class BlogController {
 	}
 
 	//GET ALL BLOGS
+	/*
+	Retrieves all blogs.
+	Returns a list of BlogDTOs with HTTP status 302 (Found).
+	*/
 	@GetMapping
 	@Tag(name = "Get All Blogs")
 	@Operation(summary = "Get All Blogs", description = "Fetch all blogs")
@@ -71,6 +86,11 @@ public class BlogController {
 
 	
 	//UPDATE BLOG
+	/*
+	Updates an existing blog by its ID.
+	Takes a blog ID and updated BlogDTO as input.
+	Returns the updated BlogDTO with HTTP status 200 (OK).
+	*/
 	@PutMapping("/{id}")
 	@Tag(name = "Update Blog")
 	@Operation(summary = "Update Blog", description = "Update an existing blog by its ID")
@@ -80,6 +100,11 @@ public class BlogController {
 	}
 
 	//DELETE BLOG
+	/*
+	Deletes a blog by its ID.
+	Takes a blog ID as input.
+	Returns a success or failure message with HTTP status 200 (OK).
+	*/
 	@DeleteMapping("/{id}")
 	@Tag(name = "Delete Blog")
 	@Operation(summary = "Delete Blog", description = "Delete a blog using its ID")
@@ -94,6 +119,11 @@ public class BlogController {
 	// COMMENTS
 
 	//CREATE A COMMENT
+	/*
+	Adds a new comment to a blog.
+	Takes a CommentDTO as input.
+	Returns the created CommentDTO with HTTP status 201 (Created).
+	*/
 	@PostMapping("/comment")
 	@Tag(name = "Add Comment to Blog")
 	@Operation(summary = "Add Comment to Blog", description = "Add a comment to a blog using blog's ID")
@@ -103,6 +133,11 @@ public class BlogController {
 	}
 	
 	//GET ALL COMMENTS FOR BLOG
+	/*
+	Retrieves all comments for a specific blog.
+	Takes a blog ID as input.
+	Returns a list of CommentDTOs with HTTP status 302 (Found).
+	*/
 	@GetMapping("/{id}/comment")
 	@Tag(name = "Get All Comments of a Blog")
 	@Operation(summary = "Get Comments of a Blog", description = "Get comments of a blog using blog's ID")
@@ -112,6 +147,11 @@ public class BlogController {
 	}
 
 	//GET A COMMENT FOR A BLOG
+	/*
+	Retrieves a specific comment for a blog.
+	Takes a blog ID and comment ID as input.
+	Returns the corresponding CommentDTO with HTTP status 302 (Found).
+	*/
 	@GetMapping("/{blogId}/comment/{commentId}")
 	@Tag(name = "Get Comment of a Blog")
 	@Operation(summary = "Get Comment of a Blog", description = "Get a comment of a blog using comment's ID")
@@ -121,6 +161,11 @@ public class BlogController {
 	}
 
 	//DELETE A COMMENT FOR A BLOG
+	/*
+	Deletes a specific comment from a blog.
+	Takes a blog ID and comment ID as input.
+	Returns a success or failure message with HTTP status 200 (OK) or 400 (Bad Request).
+	*/
 	@DeleteMapping("/{blogId}/comment/{commentId}")
 	@Tag(name = "Delete Comment of a Blog")
 	@Operation(summary = "Delete Comment of a Blog", description = "Delete a comment of a blog using comment's ID")

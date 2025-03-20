@@ -32,6 +32,10 @@ public class CommentService {
 	// BUSINESS CODE
 
 	// ADD COMMENT
+	/*
+	 * Adds a new comment to a blog. Throws ResourceNotFoundException if the blog
+	 * does not exist.
+	 */
 	public CommentDTO addComment(CommentDTO commentDto) {
 		Blog blog = blogRepository.findById(commentDto.getBlogId())
 				.orElseThrow(() -> new ResourceNotFoundException("Blog not found with ID: " + commentDto.getBlogId()));
@@ -46,6 +50,10 @@ public class CommentService {
 	}
 
 	// GET COMMENTS FOR BLOG ID
+	/*
+	 * Retrieves all comments for a blog. Throws ResourceNotFoundException if the
+	 * blog does not exist. Throws NoCommentExistException if no comments exist.
+	 */
 	public List<CommentDTO> getCommentByBlogId(Long id) {
 		Blog blog = blogRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Blog not found with ID: " + id));
@@ -61,6 +69,10 @@ public class CommentService {
 	}
 
 	// GET SPECIFIC COMMENT BY ID FOR BLOG WITH ID
+	/*
+	 * Retrieves a specific comment for a blog. Throws ResourceNotFoundException if
+	 * the blog or comment does not exist.
+	 */
 	public CommentDTO getCommentByIdForBlogById(Long commentId, Long blogId) {
 		blogRepository.findById(blogId)
 				.orElseThrow(() -> new ResourceNotFoundException("Blog not found with ID: " + blogId));
@@ -74,6 +86,10 @@ public class CommentService {
 	}
 
 	// DELETE COMMENT BY ITS ID
+	/*
+	 * Deletes a comment from a blog. Throws ResourceNotFoundException if the blog
+	 * or comment does not exist.
+	 */
 	public Boolean deleteCommentByIdForBlogById(Long commentId, Long blogId) {
 		blogRepository.findById(blogId)
 				.orElseThrow(() -> new ResourceNotFoundException("Blog not found with ID: " + blogId));

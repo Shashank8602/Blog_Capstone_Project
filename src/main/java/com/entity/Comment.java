@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
-@Entity
+@Entity // @Entity is a JPA annotation that marks a class as a database entity
 public class Comment {
 
 	@Id
@@ -15,8 +15,8 @@ public class Comment {
 	private Long id;
 	private String comment;
 
-	@ManyToOne
-	@JoinColumn(name = "blog_id")
+	@ManyToOne //defines a many-to-one relationship
+	@JoinColumn(name = "blog_id") //specifies the foreign key column in the child entity's table that links it to the parent entity.
 	private Blog blog;
 
 	public Comment(Long id, String comment, Blog blog) {

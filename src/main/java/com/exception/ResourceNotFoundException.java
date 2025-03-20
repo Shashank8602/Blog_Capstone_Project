@@ -5,3 +5,9 @@ public class ResourceNotFoundException extends RuntimeException {
 		super(message);
 	}
 }
+
+/*
+Custom exception for resource not found.
+Extends RuntimeException.
+Thrown when a requested resource is not found.
+*/

@@ -9,16 +9,19 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
-@Entity
+@Entity // @Entity is a JPA annotation that marks a class as a database entity
 public class Blog {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id // @Id marks the field as the primary key
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // @GeneratedValue(strategy = GenerationType.IDENTITY) auto-generates unique values for it using the database's identity column.
 	private Long id;
 	private String title;
 	private String content;
-	
-	@OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, orphanRemoval = true )
+
+	@OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, orphanRemoval = true) // establishes a one-to-many relationship
+	// mappedBy = "blog" → Refers to the field in the child entity that owns the relationship.
+	// cascade = CascadeType.ALL → Applies all cascading operations (persist, merge, remove, etc.) to related entities.
+	//orphanRemoval = true → Automatically deletes child entities if they are removed from the parent's collection.
 	private List<Comment> comments;
 
 	public Blog() {

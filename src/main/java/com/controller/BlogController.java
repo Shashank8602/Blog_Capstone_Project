@@ -51,6 +51,13 @@ public class BlogController {
 		BlogDTO blog = blogService.getBlogById(id);
 		return new ResponseEntity<BlogDTO>(blog, HttpStatus.FOUND);
 	}
+	
+	@GetMapping
+	@Operation(summary = "Get All Blogs", description = "Fetch all blogs")
+	public ResponseEntity<List<BlogDTO>> getAllBlogs(){
+		List<BlogDTO> allBlogs = blogService.getAllBlogs();
+		return new ResponseEntity<List<BlogDTO>>(allBlogs, HttpStatus.FOUND);
+	}
 
 	@PutMapping("/{id}")
 	@Operation(summary = "Update Blog", description = "Update an existing blog by its ID")

@@ -1,5 +1,8 @@
 package com.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +34,15 @@ public class BlogService {
 	public BlogDTO getBlogById(Long id) {
 		Blog blog = blogRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Blog not found with ID: " + id));
 		return getDto(blog);
+	}
+	
+	//GET ALL BLOGS
+	public List<BlogDTO> getAllBlogs(){
+		List<Blog> allBlogs = blogRepository.findAll();
+		List<BlogDTO> collectBlogsDtos = allBlogs.stream()
+	            .map(this::getDto)  // Using getDto() method
+	            .collect(Collectors.toList());
+		return collectBlogsDtos;
 	}
 
 	// UPDATE

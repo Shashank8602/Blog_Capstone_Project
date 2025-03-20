@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.dto.CommentDTO;
 import com.entity.Blog;
 import com.entity.Comment;
+import com.exception.NoCommentExistException;
 import com.exception.ResourceNotFoundException;
 import com.repository.BlogRepository;
 import com.repository.CommentRepository;
@@ -49,6 +50,11 @@ public class CommentService {
 		Blog blog = blogRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Blog not found with ID: " + id));
 		List<Comment> commentForBlog = commentRepository.findByBlogId(blog.getId());
+		
+		if(commentForBlog.isEmpty()) {
+			throw new NoCommentExistException("No comment(s) exists for blog with ID: "+id);
+		}
+		
 		List<CommentDTO> commentDtoForBlog = commentForBlog.stream().map(this::getDto).collect(Collectors.toList());
 
 		return commentDtoForBlog;

@@ -13,28 +13,28 @@ import com.repository.CommentRepository;
 @Service
 public class CommentService {
 
-	private final CommentRepository cr;
+	private final CommentRepository commentRepository;
 
-	private final BlogRepository br;
+	private final BlogRepository blogRepository;
 
 	private final ModelMapper modelMapper;
 
-	public CommentService(CommentRepository cr, BlogRepository br, ModelMapper modelMapper) {
-		this.cr = cr;
-		this.br = br;
+	public CommentService(CommentRepository commentRepository, BlogRepository blogRepository, ModelMapper modelMapper) {
+		this.commentRepository = commentRepository;
+		this.blogRepository = blogRepository;
 		this.modelMapper = modelMapper;
 	}
 
 	// BUSINESS CODE
 	public CommentDTO addComment(CommentDTO commentDto) {
-		Blog blog = br.findById(commentDto.getBlog_id())
-				.orElseThrow(() -> new ResourceNotFoundException("Blog not found with ID: " + commentDto.getBlog_id()));
+		Blog blog = blogRepository.findById(commentDto.getBlogId())
+				.orElseThrow(() -> new ResourceNotFoundException("Blog not found with ID: " + commentDto.getBlogId()));
 		Comment comment = getEntity(commentDto);
 		comment.setBlog(blog);
 
-		Comment savedComment = cr.save(comment);
+		Comment savedComment = commentRepository.save(comment);
 		CommentDTO savedDto = getDto(savedComment);
-		savedDto.setBlog_id(commentDto.getBlog_id());
+		savedDto.setBlogId(commentDto.getBlogId());
 
 		return savedDto;
 	}

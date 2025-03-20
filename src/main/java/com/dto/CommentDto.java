@@ -1,18 +1,27 @@
 package com.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
+
 public class CommentDTO {
 
-	// validations to be added
-
 	private Long id;
+	
+	@NotBlank(message = "Comment cannot be empty or blank")
+	@Size(min = 3, max = 200, message = "Comment's size must be between 3 and 200")
 	private String comment;
-	private Long blog_id;
+	
+	@NotNull(message = "Blog ID cannot be null")
+	@Positive(message = "Blog ID must be positive")
+	private Long blogId;
 
-	public CommentDTO(Long id, String comment, Long blog_id) {
+	public CommentDTO(Long id, String comment, Long blogId) {
 		super();
 		this.id = id;
 		this.comment = comment;
-		this.blog_id = blog_id;
+		this.blogId = blogId;
 	}
 
 	public CommentDTO() {
@@ -36,12 +45,12 @@ public class CommentDTO {
 		this.comment = comment;
 	}
 
-	public Long getBlog_id() {
-		return blog_id;
+	public Long getBlogId() {
+		return blogId;
 	}
 
-	public void setBlog_id(Long blog_id) {
-		this.blog_id = blog_id;
+	public void setBlogId(Long blogId) {
+		this.blogId = blogId;
 	}
 
 }

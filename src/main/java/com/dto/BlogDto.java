@@ -1,11 +1,18 @@
 package com.dto;
 
-public class BlogDTO {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
-	//validations to be added
+public class BlogDTO {
 	
 	private Long id;
+	
+	@NotBlank(message = "Title cannot be empty or blank")
+	@Size(min = 3, max = 100, message = "Title's size must be between 3 and 200")
 	private String title;
+	
+	@NotBlank(message = "Content cannot be empty or blank")
+	@Size(min = 3, max = 200, message = "Content's size must be between 3 and 200")
 	private String content;
 
 	public BlogDTO() {

@@ -16,6 +16,8 @@ import com.dto.CommentDTO;
 import com.service.BlogService;
 import com.service.CommentService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/blogs")
 public class BlogController {
@@ -30,7 +32,7 @@ public class BlogController {
 	}
 
 	@PostMapping
-	public ResponseEntity<BlogDTO> createNewBlog(@RequestBody BlogDTO blogDto) {
+	public ResponseEntity<BlogDTO> createNewBlog(@Valid @RequestBody BlogDTO blogDto) {
 		BlogDTO blog = blogService.addBlog(blogDto);
 		return new ResponseEntity<BlogDTO>(blog, HttpStatus.CREATED);
 	}
@@ -42,7 +44,7 @@ public class BlogController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<BlogDTO> updateBlog(@PathVariable Long id, @RequestBody BlogDTO blogDto) {
+	public ResponseEntity<BlogDTO> updateBlog(@PathVariable Long id,@Valid @RequestBody BlogDTO blogDto) {
 		BlogDTO blog = blogService.modifyBlog(id, blogDto);
 		return new ResponseEntity<BlogDTO>(blog, HttpStatus.OK);
 	}
@@ -54,7 +56,7 @@ public class BlogController {
 	}
 
 	@PostMapping("/comment")
-	public ResponseEntity<CommentDTO> createNewComment(@RequestBody CommentDTO commentDto) {
+	public ResponseEntity<CommentDTO> createNewComment(@Valid @RequestBody CommentDTO commentDto) {
 		CommentDTO comment = commentService.addComment(commentDto);
 		return new ResponseEntity<CommentDTO>(comment, HttpStatus.CREATED);
 	}

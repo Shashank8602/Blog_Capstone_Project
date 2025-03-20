@@ -11,46 +11,46 @@ import com.repository.BlogRepository;
 @Service
 public class BlogService {
 
-	private final BlogRepository br;
+	private final BlogRepository blogRepository;
 
 	private final ModelMapper modelMapper;
 
-	public BlogService(BlogRepository br, ModelMapper modelMapper) {
-		this.br = br;
+	public BlogService(BlogRepository blogRepository, ModelMapper modelMapper) {
+		this.blogRepository = blogRepository;
 		this.modelMapper = modelMapper;
 	}
 
 	// BUSINESS CODES
 	// ADD
 	public BlogDTO addBlog(BlogDTO blogDto) {
-		Blog savedBlog = br.save(getEntity(blogDto));
+		Blog savedBlog = blogRepository.save(getEntity(blogDto));
 		return getDto(savedBlog);
 	}
 
 	// GET BY ID
 	public BlogDTO getBlogById(Long id) {
-		Blog blog = br.findById(id).orElseThrow(() -> new ResourceNotFoundException("Blog not found with ID: " + id));
+		Blog blog = blogRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Blog not found with ID: " + id));
 		return getDto(blog);
 	}
 
 	// UPDATE
 	public BlogDTO modifyBlog(Long id, BlogDTO blogDto) {
 		// fetch
-		Blog blog = br.findById(id).orElseThrow(() -> new ResourceNotFoundException("Blog not found with ID: " + id));
+		Blog blog = blogRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Blog not found with ID: " + id));
 
 		// modify
 		blog.setTitle(blogDto.getTitle());
 		blog.setContent(blogDto.getContent());
 
 		// save and return
-		BlogDTO dto = getDto(br.save(blog));
+		BlogDTO dto = getDto(blogRepository.save(blog));
 		return dto;
 	}
 
 	//DELETE
 	public boolean deleteBlog(Long id) {
-		Blog blog = br.findById(id).orElseThrow(() -> new ResourceNotFoundException("Blog not found with ID: " + id));
-		br.delete(blog);
+		Blog blog = blogRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Blog not found with ID: " + id));
+		blogRepository.delete(blog);
 		return true;
 	}
 
